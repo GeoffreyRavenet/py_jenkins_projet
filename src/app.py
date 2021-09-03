@@ -1,4 +1,4 @@
 def maj_letter(mot):
-    return str.capitalize(mot)
+    return str.capitalize(mot[0])
 
-print(maj_letter("test"))
+print(maj_letter("adrien"))
