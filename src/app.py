@@ -3,4 +3,7 @@
 def maj_letter(mot):
     return str.capitalize(mot[0])
 
-print(maj_letter("adrien"))
+
+def test_maj_letter():
+    test = maj_letter("adrien")
+    assert test == "A"
