@@ -1,28 +1,24 @@
 pipeline {
     agent {
-        dockerfile {
-            filename 'Dockerfile'
-            //dir 'build'
-            label 'python-env'
-            additionalBuildArgs  '--build-arg version=1.0.0'
-            //args '-v /tmp:/tmp'
+        docker {
+            image: 'python:3.9'
         }
     }
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                sh 'pip install -r requiremments'
+                sh 'python3 app.py'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                sh 'pytest app.py'
             }
         }
-        stage('Deploy') {
+        stage('dockerise') {
             steps {
                 echo 'Deploying....'
             }
-        }
-    }
+        }    }
 }
