@@ -1,8 +1,8 @@
-
+def app
 pipeline {
     agent any
     stages{
-        def app
+        
         stage('clone repoistory') {
             checkout scm
         }
