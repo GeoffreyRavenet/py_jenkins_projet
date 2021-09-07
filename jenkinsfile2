@@ -1,0 +1,25 @@
+pipeline {
+    def application
+    stage('clone repoistory') {
+        checkout scm
+    }
+
+    stage('build image') {
+        application = docker.build('master')
+    }
+    stage('install'){
+        application.inside {
+            sh 'pip install -r requiremments'
+            sh 'python3 app.py'
+        }
+    }
+    stage('test image') {
+        application.inside {
+            sh 'pytest app.py'
+        }
+    }
+
+    stage('deploy image') {
+
+    }
+}
