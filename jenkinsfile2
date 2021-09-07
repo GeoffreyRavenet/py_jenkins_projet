@@ -1,28 +1,32 @@
-def app
+
 pipeline {
+    agent any
+    stages{
+        def app
+        stage('clone repoistory') {
+            checkout scm
+        }
 
-    stage('clone repoistory') {
-        checkout scm
-    }
+        stage('build image') {
+            app = docker.build('master')
+        }
+        stage('install'){
+            app.inside {
+                sh 'pip install -r requiremments'
+                sh 'python3 app.py'
+            }
+        }
+        stage('test image') {
+            app.inside {
+                sh 'pytest app.py'
+            }
+        }
 
-    stage('build image') {
-        app = docker.build('master')
-    }
-    stage('install'){
-        app.inside {
-            sh 'pip install -r requiremments'
-            sh 'python3 app.py'
+        stage('deploy image') {
+            steps {
+                echo 'Deploying....'
+            }
         }
     }
-    stage('test image') {
-        app.inside {
-            sh 'pytest app.py'
-        }
-    }
 
-    stage('deploy image') {
-        steps {
-            echo 'Deploying....'
-        }
-    }
 }
